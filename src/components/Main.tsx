@@ -19,21 +19,10 @@ import {
   TypingIndicator,
   MessageList
 } from "@chatscope/chat-ui-kit-react";
-import { Client } from "@stomp/stompjs";
 
 export const Main = () => {
   const [messageInputValue, setMessageInputValue] = useState("");
-  const user = JSON.parse(localStorage.getItem('user') || '');
 
-  const client = new Client({
-    brokerURL: 'ws://localhost/chat',
-    onConnect: () => {
-      client.subscribe(`/topic/chat/${user.uiNum}`, (data) => {
-        console.log(data);
-      });
-    }
-
-  })
   return (
     <div
       style={{

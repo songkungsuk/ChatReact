@@ -1,59 +1,60 @@
-import React, { useEffect, useState } from 'react'
-import { ChatUserInfo } from '../types/ChatUserInfo.type';
+import { useEffect, useState } from 'react';
+import { User } from '../types/User.type';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
-  const [rememberId, setRememberId] = useState(false);
-  const [chatUser, setChatUser] = useState<ChatUserInfo>({});
   const [error, setError] = useState<boolean>(false);
+  const [chatUser, setChatUser] = useState<User>({});
+  const [rememberId, setRememberId] = useState<boolean>(false);
+  const uiId: any = localStorage.getItem('uiId');
   const navigate = useNavigate();
-  let chiId: any = localStorage.getItem('chiId');
+  //function 입력값에따라 유저객체가 변화한다
+  const changeUser = (evt: any) => {
+    if (localStorage.getItem('uiId')) {
+      localStorage.removeItem('uiId');
+    }
+    setChatUser({
+      ...chatUser,
+      [evt.target.id]: evt.target.value
+    })
+  }
+
+  //체크박스 체크 여부 
+  const checkRememberId = (evt: any) => {
+    setRememberId(evt.target.checked);
+  }
+
+  //로그인 함수
+  const login = async () => {
+    const url = `${process.env.REACT_APP_HTTP}://${process.env.REACT_APP_HOST}/api/login`;
+
+    const res = await axios.post(url, chatUser, {
+      headers: {
+        'Content-Type': 'applicaion/json;'
+      }
+    }).then(res => {
+      localStorage.setItem('user', JSON.stringify(res.data));
+      if (rememberId) {
+        localStorage.setItem('uiId', res.data.uiId);
+      } else {
+        localStorage.removeItem('uiId');
+      }
+      navigate('/main');
+    }).catch((err) => {
+      setError(true);
+      console.log(err);
+    });
+    console.log(res);
+  }
+
+  //useEffect에 두번째 매개변수에 [] 를 한 경우에는 한번만실행된다.
   useEffect(() => {
-    let chiId: any = localStorage.getItem('chiId');
-    if (chiId) {
-      setChatUser({
-        ...chatUser,
-        chiId: chiId
-      })
+    if (localStorage.getItem('uiId')) {
       setRememberId(true);
     }
   }, [])
 
-
-
-  const checkRememberId = (evt: any) => {
-    setRememberId(evt.target.checked);
-  }
-  const changeUser = (event: any) => {
-
-    setChatUser({
-      ...chatUser,
-      [event.target.id]: event.target.value
-    })
-    console.log(chatUser);
-  }
-  const login = async () => {
-    const res = await axios.post('http://localhost/login', chatUser, {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8'
-      }
-    }).then(res => {
-      alert('로그인이 완료되었습니다.');
-      localStorage.setItem('user', JSON.stringify(res.data));
-      if (rememberId) {
-        localStorage.setItem('chiId', res.data.chiId);
-      } else {
-        localStorage.removeItem('chiId');
-      }
-      navigate('/');
-    })
-      .catch(err => {
-        setError(true);
-        console.log(err);
-      })
-    console.log(res);
-  }
 
   return (
     <div className="auth-inner">
@@ -68,17 +69,36 @@ export const Login = () => {
             </div> : ''
           }
           <label>아이디</label>
-          <input type="text" className="form-control" placeholder="아이디" onChange={changeUser} id='chiId' value={chiId} />
+          <input
+            type="text"
+            className="form-control"
+            placeholder="아이디"
+            onChange={changeUser}
+            id='uiId'
+            value={uiId}
+          />
         </div>
 
         <div className="mb-3">
           <label>비밀번호</label>
-          <input type="password" className="form-control" placeholder="비밀번호" onChange={changeUser} id='chiPwd' />
+          <input
+            type="password"
+            className="form-control"
+            placeholder="비밀번호"
+            onChange={changeUser}
+            id='uiPwd'
+          />
         </div>
 
         <div className="mb-3">
           <div className="custom-control custom-checkbox">
-            <input type="checkbox" className="custom-control-input" id="customCheck1" onChange={checkRememberId} checked={rememberId} />
+            <input
+              type="checkbox"
+              className="custom-control-input"
+              id="customCheck1"
+              onChange={checkRememberId}
+              checked={rememberId}
+            />
             <label className="custom-control-label" htmlFor="customCheck1" >
               아이디 저장
             </label>
