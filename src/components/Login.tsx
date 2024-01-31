@@ -4,6 +4,7 @@ import { axiosHttp } from '../api/axiosHttp';
 import { useAppDispatch } from '../store';
 import { setUser } from '../store/userSlice';
 import { User } from '../types/User.type';
+import { initClient } from '../store/clientSlice';
 
 export const Login = () => {
   const [error, setError] = useState<boolean>(false);
@@ -34,8 +35,10 @@ export const Login = () => {
   const login = async () => {
     try {
       const res = await axiosHttp.post('/api/login', chatUser);
-      dispatch(setUser(res.data));
+      localStorage.setItem('uiNum', res.data.uiNum);
       localStorage.setItem('token', res.data.token);
+      dispatch(setUser(res.data));
+      dispatch(initClient());
       navigate('/main');
     } catch (error) {
       setError(true);

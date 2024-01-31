@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./userSlice";
-
+import clientReducer from "./clientSlice"
 
 
 const reducers = combineReducers({
-    user: userReducer
+    user: userReducer,
+    stomp: clientReducer
 });
 
 const persistConfig = {
