@@ -15,5 +15,6 @@ export interface User{
     token?:string;
 	login?:boolean;
 	loginDate?:string;
+	authorities?:any[];
 
 }

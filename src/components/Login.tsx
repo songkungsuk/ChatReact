@@ -35,6 +35,8 @@ export const Login = () => {
     try {
       const res = await axiosHttp.post('/api/login', chatUser);
       dispatch(setUser(res.data));
+      localStorage.setItem('token', res.data.token);
+      navigate('/main');
     } catch (error) {
       setError(true);
     }
