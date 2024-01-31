@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
-import { User } from '../types/User.type';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { axiosHttp } from '../api/axiosHttp';
+import { useAppDispatch } from '../store';
+import { setUser } from '../store/userSlice';
+import { User } from '../types/User.type';
 
 export const Login = () => {
   const [error, setError] = useState<boolean>(false);
   const [chatUser, setChatUser] = useState<User>({});
   const [rememberId, setRememberId] = useState<boolean>(false);
   const uiId: any = localStorage.getItem('uiId');
+
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   //function 입력값에따라 유저객체가 변화한다
   const changeUser = (evt: any) => {
     if (localStorage.getItem('uiId')) {
@@ -27,25 +32,12 @@ export const Login = () => {
 
   //로그인 함수
   const login = async () => {
-    const url = `${process.env.REACT_APP_HTTP}://${process.env.REACT_APP_HOST}/api/login`;
-
-    const res = await axios.post(url, chatUser, {
-      headers: {
-        'Content-Type': 'applicaion/json;'
-      }
-    }).then(res => {
-      localStorage.setItem('user', JSON.stringify(res.data));
-      if (rememberId) {
-        localStorage.setItem('uiId', res.data.uiId);
-      } else {
-        localStorage.removeItem('uiId');
-      }
-      navigate('/main');
-    }).catch((err) => {
+    try {
+      const res = await axiosHttp.post('/api/login', chatUser);
+      dispatch(setUser(res.data));
+    } catch (error) {
       setError(true);
-      console.log(err);
-    });
-    console.log(res);
+    }
   }
 
   //useEffect에 두번째 매개변수에 [] 를 한 경우에는 한번만실행된다.

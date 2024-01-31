@@ -13,7 +13,7 @@ export interface User{
 	uiLmodat?:string;
 	uiLmotim?:string;
     token?:string;
-	login?:string;
+	login?:boolean;
 	loginDate?:string;
 
 }
