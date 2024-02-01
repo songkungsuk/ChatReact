@@ -31,6 +31,11 @@ export const Login = () => {
   const checkRememberId = (evt: any) => {
     setRememberId(evt.target.checked);
   }
+  
+  //로그인화면에 접속햇을때 localStorage에 있는 내용을 모두 지운다.
+  useEffect(() => {
+    localStorage.clear();
+  }, [])
 
   //로그인 함수
   const login = async () => {

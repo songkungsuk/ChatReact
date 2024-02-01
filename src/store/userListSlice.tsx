@@ -3,11 +3,11 @@ import { User } from "../types/User.type";
 
 
 const userListSlice = createSlice({
-    name: 'user',
+    name: 'userList',
     initialState: { list: [] },
     reducers: {
         setUserList: (state: any, action: any) => {
-            state.list = action.payload.list
+            state.list = action.payload
         }
     }
 })

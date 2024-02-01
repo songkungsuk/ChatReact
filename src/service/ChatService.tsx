@@ -14,22 +14,20 @@ const client = new Client({
 
 })
 
-export const initClient = async (config: any) => {
+export const initClient = async (configs: any[]) => {
 
     return new Promise((resolve, rejects) => {
         if (!localStorage.getItem('uiNum') || !localStorage.getItem('token')) {
-            throw new Error('login');
+            rejects('login');
         }
         client.connectHeaders = {
             uiNum: localStorage.getItem('uiNum') || '',
             token: localStorage.getItem('token') || '',
         }
         client.onConnect = () => {
-            client.subscribe(config.url, config.callback);
-            client.subscribe(`/topic/chat/${localStorage.getItem('uiNum')}`, (data: any) => {
-                const msg = JSON.parse(data.body);
-                console.log(msg);
-            })
+            for(const coonfig of configs){
+                client.subscribe(coonfig.url, coonfig.callback);
+            }
             resolve(client);
         }
         client.activate();

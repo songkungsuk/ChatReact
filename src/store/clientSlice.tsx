@@ -19,9 +19,6 @@ const clientSlice = createSlice({
                 connectHeaders: {
                     uiNum: localStorage.getItem('uiNum') || '',
                 },
-                onConnect:(frame)=>{
-                    console.log(frame);
-                }
             });
         },
         setSubScribe:(state:any, action)=>{

@@ -1,4 +1,3 @@
-
 import {
   ExpansionPanel,
   MainContainer, Sidebar
