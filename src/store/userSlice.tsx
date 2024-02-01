@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "../types/User.type";
+import { PURGE } from "redux-persist";
 
 const initialState: User = {
     uiNum: 0,
@@ -56,7 +57,10 @@ const userSlice = createSlice({
             state.uiLmodat = initialState.uiLmodat
             state.loginDate = initialState.loginDate
             state.authorities = initialState.authorities
-        }
+        },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
     }
 })
 

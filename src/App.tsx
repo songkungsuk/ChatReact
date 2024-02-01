@@ -10,6 +10,8 @@ import { setUserList } from './store/userListSlice';
 import { disconnectClient, initClient } from './service/ChatService';
 import { Toast } from './components/Toast';
 import { setEnterUser } from './store/enterUserSlice';
+import { Menu } from './components/Menu';
+
 
 
 
@@ -69,28 +71,10 @@ function App() {
       <div className="App">
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
           <div className="container">
-            <Link className="navbar-brand" to={'/sign-in'}>
+            <Link className="navbar-brand" to={loginUser.uiNum == 0 ? '/sign-in' : '/main'}>
               Chatting
             </Link>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to={'/sign-in'}>
-                    SignIn
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to={'/sign-up'}>
-                    SignUp
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to={'/Main'}>
-                    채팅
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            <Menu />
           </div>
         </nav>
 
