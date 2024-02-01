@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosHttp } from '../api/axiosHttp';
-import { useAppDispatch } from '../store';
+
 import { setUser } from '../store/userSlice';
 import { User } from '../types/User.type';
-import { initClient } from '../store/clientSlice';
+import { useChatDispatch } from '../store';
+import { initClient } from '../service/ChatService';
 
 export const Login = () => {
   const [error, setError] = useState<boolean>(false);
@@ -12,7 +13,7 @@ export const Login = () => {
   const [rememberId, setRememberId] = useState<boolean>(false);
   const uiId: any = localStorage.getItem('uiId');
 
-  const dispatch = useAppDispatch();
+  const dispatch = useChatDispatch();
   const navigate = useNavigate();
 
   //function 입력값에따라 유저객체가 변화한다
@@ -38,7 +39,7 @@ export const Login = () => {
       localStorage.setItem('uiNum', res.data.uiNum);
       localStorage.setItem('token', res.data.token);
       dispatch(setUser(res.data));
-      dispatch(initClient());
+      //dispatch(initClient());
       navigate('/main');
     } catch (error) {
       setError(true);

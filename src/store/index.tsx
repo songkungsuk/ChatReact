@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./userSlice";
-import clientReducer from "./clientSlice"
+import userListReducer from "./userListSlice"
 
 
 const reducers = combineReducers({
     user: userReducer,
-    stomp: clientReducer
+    userList: userListReducer
 });
 
 const persistConfig = {
@@ -25,5 +25,5 @@ export const store = configureStore({
         getdefaultMiddleware({ serializableCheck: false }),
 });
 
-export const useAppDispatch = () => useDispatch();
-export const useAppSelector = useSelector;
+export const useChatDispatch = () => useDispatch();
+export const useChatSelector = useSelector;

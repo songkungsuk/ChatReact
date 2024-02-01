@@ -33,5 +33,3 @@ const clientSlice = createSlice({
     }
 });
 
-export default clientSlice.reducer;
-export const {initClient, setSubScribe} = clientSlice.actions;
