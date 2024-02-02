@@ -11,6 +11,7 @@ import { disconnectClient, initClient } from './service/ChatService';
 import { Toast } from './components/Toast';
 import { setEnterUser } from './store/enterUserSlice';
 import { Menu } from './components/Menu';
+import { persistor } from '.';
 
 
 
@@ -58,6 +59,7 @@ function App() {
   useEffect(() => {
     disconnectClient();
     if (!loginUser.uiNum) {
+      persistor.purge();
       return;
     }
     initClient(configs)
