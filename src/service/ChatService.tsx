@@ -1,6 +1,7 @@
 import { Client } from "@stomp/stompjs";
 import { useChatDispatch } from "../store";
 import { setUserList } from "../store/userListSlice";
+import { Msg } from "../types/Msg.type";
 
 
 const borkerURL = `${process.env.REACT_APP_WS}://${process.env.REACT_APP_HOST}/react-chat`;
@@ -25,7 +26,7 @@ export const initClient = async (configs: any[]) => {
             token: localStorage.getItem('token') || '',
         }
         client.onConnect = () => {
-            for(const coonfig of configs){
+            for (const coonfig of configs) {
                 client.subscribe(coonfig.url, coonfig.callback);
             }
             resolve(client);
@@ -38,4 +39,11 @@ export const disconnectClient = () => {
     if (client.connected) {
         client.deactivate();
     }
+}
+
+export const publishMsg = (dstination: string, msg: Msg) => {
+    client.publish({
+        destination: dstination,
+        body: JSON.stringify(msg),
+    })
 }
