@@ -6,17 +6,20 @@ import userReducer from "./userSlice";
 import userListReducer from "./userListSlice"
 import enterUserReducer from "./enterUserSlice"
 import selectedUserReducer from "./selectedUserSlice"
+import chatListReducer from "./chatListSlice"
 
 const reducers = combineReducers({
     user: userReducer,
     userList: userListReducer,
     enterUser: enterUserReducer,
-    selectedUser: selectedUserReducer
+    selectedUser: selectedUserReducer,
+    chatList: chatListReducer
 });
 
 const persistConfig = {
     key: "root",
     storage,
+    whitelist: ['user', 'userList']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

@@ -1,9 +1,8 @@
 import { Avatar, Conversation, ConversationList, Search, Sidebar } from "@chatscope/chat-ui-kit-react";
-import { useChatDispatch, useChatSelector } from "../store";
-import { User } from "../types/User.type";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useChatDispatch, useChatSelector } from "../store";
 import { setSelectedUser } from "../store/selectedUserSlice";
+import { User } from "../types/User.type";
 
 export const UserList = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -21,7 +20,7 @@ export const UserList = () => {
                 {
                     users.map((chatUser: any, idx: any) => (
 
-                        <Conversation name={chatUser.uiId} lastSenderName={chatUser.uiName} info="Yes i can do it for you" style={{ justifyContent: "start" }}
+                        <Conversation name={chatUser.uiId} lastSenderName={chatUser.uiName} info="Yes i can do it for you" unreadCnt={chatUser.unreadCnt} style={{ justifyContent: "start" }}
                             onClick={() => {
                                 dispatch(setSelectedUser(chatUser))
                             }}

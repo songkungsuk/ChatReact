@@ -7,6 +7,7 @@ const userListSlice = createSlice({
     initialState: { list: [] },
     reducers: {
         setUserList: (state: any, action: any) => {
+            localStorage.setItem('userList', JSON.stringify(action.payload));
             state.list = action.payload
         }
     }

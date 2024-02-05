@@ -41,6 +41,7 @@ const selectedUserSlice = createSlice({
             state.uiLmotim = action.payload.uiLmotim;
             state.loginDate = action.payload.loginDate;
             state.authorities = action.payload.authorities;
+            localStorage.setItem('selectedUser',JSON.stringify(action.payload));
         },
         initSelectedUser: (state: User) => {
             state.uiNum = initialState.uiNum

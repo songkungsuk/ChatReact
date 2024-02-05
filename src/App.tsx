@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Login } from './components/Login';
@@ -12,18 +12,25 @@ import { Toast } from './components/Toast';
 import { setEnterUser } from './store/enterUserSlice';
 import { Menu } from './components/Menu';
 import { persistor } from '.';
+import { globalRouter } from './api/globalRouter';
+import { setChatList } from './store/chatListSlice';
 
 
 
 
 function App() {
 
+  //토큰이 없을때 페이지에서 검사해서 이동시켜주는 navigate axios를 편집해서 간단하게 구현이되었습니다.
+  const navigate = useNavigate();
+  globalRouter.navigate = navigate;
   //useSelector로 저장된 유저객체 가져옴
   const loginUser = useChatSelector((state: any) => state.user);
   const uiNum = localStorage.getItem('uiNum');
   const tmpObj = useChatSelector((state: any) => state.userList);
+  const selectedUser = useChatSelector((state: any) => state.selectedUser);
   const dispatch = useChatDispatch();
   const configs = [{
+    //사람이 들어오면 해당 함수를 실행한다. 
     url: '/topic/enter-chat',
     callback: (data: any) => {
       const tmpUsers = JSON.parse(data.body);
@@ -48,11 +55,35 @@ function App() {
       dispatch(setUserList(tmpUsers));
     }
   },
+  //메세지를 받으면 이 함수가 자동적으로 실행이되는거다.
   {
     url: `/topic/chat/${loginUser.uiNum}`,
     callback: (data: any) => {
+      const tmpList = JSON.parse(localStorage.getItem('userList') || '[]');
+      const selectedUser = JSON.parse(localStorage.getItem('selectedUser') || '{}');
       const msg = JSON.parse(data.body);
-      console.log('msg=>', msg);
+      const uiNum = parseInt(localStorage.getItem('uiNum') || '0');
+      //자신은숫자오르면안되니 자신은제외 
+      if (msg.cmiSenderUiNum !== selectedUser.uiNum && msg.cmiSenderUiNum !== uiNum) {
+        for (const user of tmpList) {
+          if (user.uiNum === msg.cmiSenderUiNum) {
+            user.unreadCnt = (isNaN(user.unreadCnt) ? 1 : ++user.unreadCnt);
+            console.log(user);
+          }
+
+        }
+      } else {
+        const chatlist = JSON.parse(localStorage.getItem('chatList') || '');
+        const chatInfo: any = {
+          uiNum: selectedUser.uiNum,
+          list: [...chatlist, msg]
+        }
+        dispatch(setChatList(chatInfo));
+        console.log('msg=>', msg);
+      }
+
+      dispatch(setUserList(tmpList));
+
     }
   }]
   //useEffect로 로그인유저 화긴
@@ -69,7 +100,7 @@ function App() {
   }, [loginUser]);
 
   return (
-    <BrowserRouter>
+    <>
       <div className="App">
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
           <div className="container">
@@ -91,7 +122,7 @@ function App() {
 
         </div>
       </div>
-    </BrowserRouter>
+    </>
   );
 }
 
