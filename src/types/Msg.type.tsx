@@ -1,4 +1,5 @@
 export interface Msg{
+	cmiNum?:number;
     cmiMessage?:string;
 	cmiSentTime?:string;
 	cmiReceivedTime?:string;
@@ -7,6 +8,7 @@ export interface Msg{
 	cmiPosition?:string;
 	cmiType?:string;
 	cmiPayload?:string;
-	cmiSenderUiNum?:string;
-	cmiReceiveUiNum?:string;
+	cmiSenderUiNum?:number;
+	cmiReceiveUiNum?:number;
+	type?:string;
 }

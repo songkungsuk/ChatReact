@@ -1,20 +1,28 @@
+
 import {
-  ExpansionPanel,
-  MainContainer, Sidebar
+  MainContainer
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import { UserList } from "./UserList";
+import { useState } from "react";
 import { ChatList } from "./ChatList";
+import { UserList } from "./UserList";
 
 export const Main = () => {
+  const [messageInputValue, setMessageInputValue] = useState("");
+  
   return (
-    <div style={{ height: "600px", position: "relative" }}    >
+    <div
+      style={{
+        height: "600px",
+        position: "relative"
+      }}
+    >
       <MainContainer responsive>
-        <UserList />
-        <ChatList />
+        <UserList/>
+        <ChatList/>
+        
 
-
-        {<Sidebar position="right">
+        {/* <Sidebar position="right">
           <ExpansionPanel open title="INFO">
             <p>Lorem ipsum</p>
             <p>Lorem ipsum</p>
@@ -45,7 +53,7 @@ export const Main = () => {
             <p>Lorem ipsum</p>
             <p>Lorem ipsum</p>
           </ExpansionPanel>
-        </Sidebar>}
+        </Sidebar> */}
       </MainContainer>
     </div>
   );

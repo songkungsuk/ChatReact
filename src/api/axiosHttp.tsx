@@ -2,42 +2,34 @@ import axios from "axios";
 import { persistor } from "..";
 import { globalRouter } from "./globalRouter";
 
-const url = `${process.env.REACT_APP_HTTP}://${process.env.REACT_APP_HOST}`
-
+const url = `${process.env.REACT_APP_HTTP}://${process.env.REACT_APP_HOST}`;
 export const axiosHttp = axios.create({
-    baseURL: url,
-    headers: {
-        'Content-Type': 'application/json;'
-    }
-})
+    baseURL: url
+});
 
-const token = localStorage.getItem('token');
 export const axiosAuth = axios.create({
     baseURL: url,
     headers: {
-        'Content-Type': 'application/json;',
-        'Authorization': token
+        'Content-Type': 'application/json;charset=UTF-8'
     }
-})
+});
 
 axiosAuth.interceptors.request.use(
     (config: any) => {
         const token = localStorage.getItem('token');
         if (!token) {
-            if (globalRouter.navigate) {
+            if(globalRouter.navigate){
                 globalRouter.navigate("/");
                 return Promise.reject('login');
             }
         }
         config.headers.Authorization = token;
         return config;
-    }
-    ,
+    },
     (err: any) => {
         return Promise.reject(err);
     }
-
-)
+);
 
 axiosAuth.interceptors.response.use(
     function (res) {
@@ -50,13 +42,15 @@ axiosAuth.interceptors.response.use(
                 case 402:
                 case 403:
                     persistor.pause();
-                    if (globalRouter.navigate) {
+                    if(globalRouter.navigate){
                         globalRouter.navigate("/");
                     }
-                    break;
+                    return;
                 default:
                     return Promise.reject(error);
             }
         }
-    }
-)
+
+        return Promise.reject(error);
+    },
+);

@@ -1,49 +1,41 @@
 import { Client } from "@stomp/stompjs";
-import { useChatDispatch } from "../store";
-import { setUserList } from "../store/userListSlice";
 import { Msg } from "../types/Msg.type";
 
-
-const borkerURL = `${process.env.REACT_APP_WS}://${process.env.REACT_APP_HOST}/react-chat`;
+const brokerURL = `${process.env.REACT_APP_WS}://${process.env.REACT_APP_HOST}/react-chat`;
 
 const client = new Client({
-    brokerURL: borkerURL,
+    brokerURL: brokerURL,
     debug: (str) => {
-        console.log(str);
     },
+});
 
-
-})
-
-export const initClient = async (configs: any[]) => {
-
-    return new Promise((resolve, rejects) => {
+export const initClient = async (configs:any[]) => {
+    return new Promise((resolve, reject) => {
         if (!localStorage.getItem('uiNum') || !localStorage.getItem('token')) {
-            rejects('login');
+            reject('login');
         }
         client.connectHeaders = {
             uiNum: localStorage.getItem('uiNum') || '',
-            token: localStorage.getItem('token') || '',
+            token: localStorage.getItem('token') || ''
         }
         client.onConnect = () => {
-            for (const coonfig of configs) {
-                client.subscribe(coonfig.url, coonfig.callback);
+            for(const config of configs){
+                client.subscribe(config.url, config.callback);
             }
             resolve(client);
         }
         client.activate();
     })
 }
-
-export const disconnectClient = () => {
-    if (client.connected) {
+export const disconnectClient = ()=>{
+    if(client.connected){
         client.deactivate();
     }
 }
 
-export const publishMsg = (dstination: string, msg: Msg) => {
+export const publishMsg = (destination:string, msg:Msg)=>{
     client.publish({
-        destination: dstination,
-        body: JSON.stringify(msg),
+        destination:destination,
+        body:JSON.stringify(msg)
     })
 }

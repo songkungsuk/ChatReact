@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <textarea id="chatList" cols="30" rows="20"></textarea><br>
+    <button onclick="i=1;getMsgs(true)">처음메세지가져오기</button>
+    <button onclick="getMsgs()">메세지추가하기</button>
+    <script>
+        function getMsgs(init){
+            const arr = [1,2,3,4];
+            alert(arr[arr.length-1]);
+            alert(arr.slice(-1));
+            alert(arr.pop());
+        }
+    </script>
+</body>
+</html>

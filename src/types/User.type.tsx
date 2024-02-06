@@ -1,8 +1,8 @@
 export interface User{
     uiNum?:number;
-    uiId?:string;
-    uiPwd?:string;
-    uiName?:string;
+	uiId?:string;
+	uiPwd?:string;
+	uiName?:string;
 	uiEmail?:string;
 	uiPhone?:string;
 	uiBirth?:string;
@@ -12,10 +12,12 @@ export interface User{
 	uiCretim?:string;
 	uiLmodat?:string;
 	uiLmotim?:string;
-    token?:string;
-	login?:boolean;
+	uiImgPath?:string;
+	sessionId?:string;
 	loginDate?:string;
+	riNum?:number;
+	token?:string;
+	login?:boolean;
 	authorities?:any[];
 	unreadCnt?:number;
-
 }

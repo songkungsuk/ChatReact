@@ -1,8 +1,6 @@
 
-export const SignUp = () => {
+export const SignUp = ()=>{
     return (
-        <div className="auth-inner">
-            <div></div>
-        </div>
+        <div></div>
     )
 }
